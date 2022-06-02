@@ -7,20 +7,16 @@ app = Flask(__name__)
 
 # web scraping lyrics from 'songlyrics.com'
 
-def get_lyrics():
-  artist_name = input("Artist Name: ")
-  song_name = input("Song Name: ")
+def get_lyrics(artist_name, song_name):
 
   URL = f"http://www.songlyrics.com/{artist_name}/{song_name}-lyrics/"
 
-  response = requests.get(URL)
+  res = requests.get(URL)
 
-  soup = BeautifulSoup(response.content,'html5lib')
+  soup = BeautifulSoup(res.content,'html5lib')
   data = soup.find('p',attrs={'id':'songLyricsDiv'}).getText()
 
   return data
-
-lyrics = get_lyrics()
 
 # routing URLs
 
@@ -30,10 +26,11 @@ def respond():
   # /lyrics/?artist=
   artist = request.args.get("artist", None)
   song = request.args.get("song", None)
+  lyrics = get_lyrics(artist, song)
                             
   # for debugging
   print(f'received artist_name: {artist}')
-  print(f'received song_name: {artist}')
+  print(f'received song_name: {song}')
   # response var
   response = {}
 
@@ -43,7 +40,7 @@ def respond():
   elif str(artist).isdigit():
     response['ERROR'] = "Atleast a million dollar artist"
   else:
-    response['MESSAGE'] = f"Welcome to Musiva Lyrics API!"
+    response['MESSAGE'] = f"{lyrics}"
 
   # return json response
   return jsonify(response)
