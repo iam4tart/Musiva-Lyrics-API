@@ -8,8 +8,8 @@ app = Flask(__name__)
 # web scraping lyrics from 'songlyrics.com'
 
 def get_lyrics():
-  artist_name = "Rihanna" #input("Artist Name: ")
-  song_name = "Diamonds" #input("Song Name: ")
+  artist_name = input("Artist Name: ")
+  song_name = input("Song Name: ")
 
   URL = f"http://www.songlyrics.com/{artist_name}/{song_name}-lyrics/"
 
@@ -29,8 +29,11 @@ def respond():
   # retrieve Artist Name from URL parameter
   # /lyrics/?artist=
   artist = request.args.get("artist", None)
+  song = request.args.get("song", None)
+                            
   # for debugging
   print(f'received artist_name: {artist}')
+  print(f'received song_name: {artist}')
   # response var
   response = {}
 
@@ -46,17 +49,6 @@ def respond():
   return jsonify(response)
 
 #--
-#if __name__ = '__main__':
+if __name__ = '__main__':
   # multiple user access
-  #app.run(threaded=True, port=5000)
-
-
-  if artist:
-    return jsonify({
-      "lyrics": f"{lyrics}",
-      "METHOD": "POST"
-    })
-  else:
-    return jsonify({
-      "ERROR": f"No artist found with name: {artist}"
-    })
+  app.run(threaded=True, port=5000)
