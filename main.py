@@ -45,7 +45,13 @@ def respond():
   # return json response
   return jsonify(response)
 
+@app.route('/')
+def homepage():
+    return '''
+    <h1>This is my lyrics app</h1>
+    '''
+
 #--
-if __name__ = '__main__':
+if __name__ == '__main__':
   # multiple user access
-  app.run(threaded=True, port=5000)
+  app.run(threaded=True, port=5000, debug=True, use_reloader=True)
