@@ -15,7 +15,7 @@ def get_lyrics(artist_name, song_name):
 
   soup = BeautifulSoup(res.content,'html5lib')
   data = soup.find('p',attrs={'id':'songLyricsDiv'}).getText()
-
+  print(data)
   return data
 
 # routing URLs
@@ -24,8 +24,8 @@ def get_lyrics(artist_name, song_name):
 def respond():
   # retrieve Artist Name from URL parameter
   # /lyrics/?artist=
-  artist = request.args.get("artist", None)
-  song = request.args.get("song", None)
+  artist = request.args.get("artist", 'rihanna')
+  song = request.args.get("song", 'diamonds')
   lyrics = get_lyrics(artist, song)
                             
   # for debugging
@@ -39,16 +39,19 @@ def respond():
     response['ERROR'] = f"No artist found with name: {artist}"
   elif str(artist).isdigit():
     response['ERROR'] = "Atleast a million dollar artist"
+  elif not song:
+    response['ERROR'] = f"No song found with name: {song}"
+  elif str(song).isdigit():
+    response['ERROR'] = "Atleast a decent song"
   else:
-    response['MESSAGE'] = f"{lyrics}"
-
+    response['lyrics'] = f"{lyrics}"
   # return json response
   return jsonify(response)
 
 @app.route('/')
 def homepage():
     return '''
-    <h1>This is my lyrics app</h1>
+    <h1>Musiva Lyrics API</h1>
     '''
 
 #--
