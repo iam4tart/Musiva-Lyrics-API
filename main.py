@@ -21,7 +21,7 @@ def get_lyrics(artist_name, song_name):
 # routing URLs
 
 @app.route('/lyrics/', methods=['GET'])
-def respond():
+def lyricify():
   # retrieve Artist Name from URL parameter
   # /lyrics/?artist=
   artist = request.args.get("artist", 'rihanna')
@@ -53,6 +53,7 @@ def homepage():
     return '''
     <h1>Musiva Lyrics API</h1>
     '''
+
 
 #--
 if __name__ == '__main__':
